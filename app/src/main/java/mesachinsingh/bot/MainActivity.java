@@ -1,9 +1,11 @@
 package mesachinsingh.bot;
 
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -12,13 +14,16 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
     private static String TAG = "MainActivity";
+    Bitmap bitmap;
+    int x_center, y_center, points;
+
     JavaCameraView javaCameraView;
-    Mat mRgba, imgGrey, imgCanny;
+    Mat mRgba;
+
     BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -46,10 +51,13 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         javaCameraView = (JavaCameraView)findViewById(R.id.javacameraview);
         javaCameraView.setVisibility(SurfaceView.VISIBLE);
+        javaCameraView.setMaxFrameSize(2048, 1152);
         javaCameraView.setCvCameraViewListener(this);
 
     }
@@ -86,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     public void onCameraViewStarted(int width, int height) {
         mRgba = new Mat(height, width, CvType.CV_8UC4);
-        imgGrey = new Mat(height, width, CvType.CV_8UC1);
-        imgCanny = new Mat(height, width, CvType.CV_8UC1);
     }
 
     @Override
@@ -99,8 +105,25 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
 
-        Imgproc.cvtColor(mRgba, imgGrey, Imgproc.COLOR_RGBA2GRAY);
-        Imgproc.Canny(imgGrey, imgCanny, 50, 150);
+       /* try {
+            bitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(mRgba, bitmap);
+        }
+        catch (CvException e) {
+            Log.i(TAG, "Bitmap not loaded");
+        }
+
+        int x = 0;
+        int y = 0;
+
+        int all_x = 0;
+        int all_y = 0;
+
+        while(x < 2048) {
+            while(y < 1152) {
+
+            }
+        }                   */
 
         return mRgba;
     }
