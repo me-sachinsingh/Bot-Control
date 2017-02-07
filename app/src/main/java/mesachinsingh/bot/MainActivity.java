@@ -1,6 +1,7 @@
 package mesachinsingh.bot;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,8 +13,13 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.CvException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         javaCameraView = (JavaCameraView)findViewById(R.id.javacameraview);
         javaCameraView.setVisibility(SurfaceView.VISIBLE);
-        javaCameraView.setMaxFrameSize(2048, 1152);
+        javaCameraView.setMaxFrameSize(1280, 720);
         javaCameraView.setCvCameraViewListener(this);
 
     }
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
 
-       /* try {
+        try {
             bitmap = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mRgba, bitmap);
         }
@@ -119,12 +125,39 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         int all_x = 0;
         int all_y = 0;
 
-        while(x < 2048) {
-            while(y < 1152) {
+        while(x < 1280) {
+            while(y < 720) {
+                int pixel = bitmap.getPixel(x, y);
 
+                int redValue = Color.red(pixel);
+                int blueValue = Color.blue(pixel);
+                int greenValue = Color.green(pixel);
+
+                if(redValue > 150 && blueValue < 70 && greenValue < 70) {
+                    points++;
+                    all_x =all_x + x;
+                    all_y =all_y + y;
+                }
+                y++;
             }
-        }                   */
+            x++;
+            y = 0;
+        }
 
+        x = 0;
+        y = 0;
+
+        if(points > 200) {
+            x_center = all_x / points;
+            y_center = all_y / points;
+
+            Point center = new Point(x_center, y_center);
+            Imgproc.circle(mRgba, center, 10, new Scalar(255, 0, 0), 1, 8, 0);
+
+            points = 0;
+            all_x = 0;
+            all_y = 0;
+        }
         return mRgba;
     }
 }
