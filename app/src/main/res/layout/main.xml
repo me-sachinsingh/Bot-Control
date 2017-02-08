@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="top"
+	android:background="#000000">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="top|center"
+		android:orientation="horizontal"
+		android:gravity="center"
+		android:layout_marginTop="20dp">
+
+		<Button
+			android:layout_height="100dp"
+			android:layout_width="105dp"
+			android:text="Turn On"
+			android:onClick="on"
+			android:background="@drawable/icon"
+			android:textColor="#4CCCCC"
+			android:id="@+id/button1"/>
+
+		<Button
+			android:layout_height="100dp"
+			android:layout_width="105dp"
+			android:text="Turn Off"
+			android:onClick="off"
+			android:background="@drawable/icon"
+			android:textColor="#4CCCCC"
+			android:layout_marginLeft="91dp"
+			android:id="@+id/button2"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center">
+
+		<Button
+			android:layout_width="115dp"
+			android:layout_height="100dp"
+			android:text="Search"
+			android:id="@+id/search"
+			android:background="@drawable/background_icon"
+			android:textColor="#4CCCCC"
+			android:paddingRight="14dp"
+			android:onClick="search"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_height="100dp"
+			android:layout_width="105dp"
+			android:text="Get Visible"
+			android:onClick="visible"
+			android:background="@drawable/icon"
+			android:textColor="#4CCCCC"
+			android:id="@+id/button3"/>
+
+		<Button
+			android:layout_height="100dp"
+			android:layout_width="105dp"
+			android:text="List Devices"
+			android:onClick="list"
+			android:layout_marginLeft="90dp"
+			android:background="@drawable/icon"
+			android:id="@+id/button4"
+			android:textColor="#4CCCCC"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+		android:gravity="center">
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text=""
+		android:id="@+id/text1"
+		android:layout_marginTop="20dp"
+		android:textSize="25sp"
+		android:textColor="#ec171b"/>
+
+	<ListView
+		android:layout_width="wrap_content"
+		android:id="@+id/listView"
+		android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
